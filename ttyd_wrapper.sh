@@ -1,0 +1,11 @@
+if ! command -v ttyd &> /dev/null; then
+    echo "ttyd not found, installing..."
+    sudo apt update
+    sudo apt install -y ttyd
+fi
+
+if [ ! -x ssh_wrapper.sh ]; then
+    chmod +x ssh_wrapper.sh
+fi
+
+ttyd -W -t enableZmodem=true -t disableReconnect=true -a ./ssh_wrapper.sh
