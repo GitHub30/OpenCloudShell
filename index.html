@@ -154,9 +154,9 @@
       const { useMemo, useState } = React;
 
       function App() {
-        const [endpoint, setEndpoint] = useState(location.href + "connect.php");
+        const [endpoint, setEndpoint] = useState("http://opencloudshell.xvps.jp/connect.php");
         const [port, setPort] = useState("10022");
-        const [destination, setDestination] = useState("linuxserver.io@localhost");
+        const [destination, setDestination] = useState("user@localhost");
         const [password, setPassword] = useState("");
         const [key, setKey] = useState("");
         const [copied, setCopied] = useState(false);
@@ -220,7 +220,7 @@
                     type="text"
                     value={port}
                     onChange={(e) => setPort(e.target.value)}
-                    placeholder="10022"
+                    placeholder="22"
                   />
                 </label>
 
