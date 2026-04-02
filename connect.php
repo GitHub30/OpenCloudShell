@@ -23,4 +23,4 @@ if (isset($_GET['key']) && $_GET['key'] && !preg_match('/\A[\r\n A-Z0-9a-z+\/=\-
 $id = uniqid();
 file_put_contents("/tmp/$id.json", json_encode($_GET));
 
-header("Location: http://opencloudshell.xvps.jp:7681/?arg=$id");
+header("Location: http://shell.opencloudshell.com:7681/?arg=$id");
