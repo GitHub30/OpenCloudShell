@@ -154,7 +154,7 @@
       const { useMemo, useState } = React;
 
       function App() {
-        const [endpoint, setEndpoint] = useState("https://effective-space-umbrella-x5rgrr7qgj6hpjr-7681.app.github.dev/");
+        const [endpoint, setEndpoint] = useState(location.href + "connect.php");
         const [port, setPort] = useState("10022");
         const [destination, setDestination] = useState("linuxserver.io@localhost");
         const [key, setKey] = useState("");
@@ -164,13 +164,15 @@
           const base = endpoint.trim();
           if (!base) return "";
 
-          const args = new URLSearchParams();
-          args.append("arg", `port=${port}`);
-          args.append("arg", `destination=${destination}`);
-          args.append("arg", `key=${key}`);
-
-          const separator = base.includes("?") ? "&" : "?";
-          return `${base}${separator}${args.toString()}`;
+          try {
+            const url = new URL(base);
+            url.searchParams.set("port", port);
+            url.searchParams.set("destination", destination);
+            url.searchParams.set("key", key);
+            return url.toString();
+          } catch {
+            return "";
+          }
         }, [endpoint, port, destination, key]);
 
         const handleCopy = async () => {
