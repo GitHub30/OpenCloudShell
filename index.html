@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="ja">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SSH Link Generator</title>
+    <title>OpenCloudShell</title>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -200,8 +200,8 @@
         return (
           <div className="container">
             <div className="card">
-              <h1>SSH Link Generator</h1>
-              <p className="hint">endpoint / port / destination / key を自由入力して、リンクを生成できます。</p>
+              <h1>OpenCloudShell</h1>
+              <p className="hint">Generate a secure SSH launch link with your endpoint, connection settings, and optional credentials.</p>
 
               <div className="grid">
                 <label>
@@ -240,7 +240,7 @@
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="接続パスワード（任意）"
+                    placeholder="Optional login password"
                   />
                 </label>
 
@@ -249,14 +249,14 @@
                   <textarea
                     value={key}
                     onChange={(e) => setKey(e.target.value)}
-                    placeholder="秘密鍵の文字列（任意）"
+                    placeholder="Optional private key content"
                   />
                 </label>
               </div>
 
               <div className="actions">
                 <button type="button" onClick={handleCopy}>
-                  {copied ? "コピー済み" : "URLをコピー"}
+                  {copied ? "Copied" : "Copy URL"}
                 </button>
 
                 <a
@@ -268,13 +268,13 @@
                     if (!generatedUrl) e.preventDefault();
                   }}
                 >
-                  新しいタブで開く
+                  Open in New Tab
                 </a>
               </div>
 
               <div className="result">
-                <p>生成されたリンク</p>
-                <div className="url">{generatedUrl || "endpointを入力してください"}</div>
+                <p>Generated Link</p>
+                <div className="url">{generatedUrl || "Enter an endpoint to generate a link."}</div>
               </div>
             </div>
           </div>
