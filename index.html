@@ -166,7 +166,7 @@
 
       function App() {
         const [endpoint, setEndpoint] = useState("http://shell.opencloudshell.com/connect.php");
-        const [port, setPort] = useState("10022");
+        const [port, setPort] = useState("");
         const [destination, setDestination] = useState("user@localhost");
         const [password, setPassword] = useState("");
         const [key, setKey] = useState("");
@@ -178,7 +178,11 @@
 
           try {
             const url = new URL(base);
-            url.searchParams.set("port", port);
+            if (port.trim()) {
+              url.searchParams.set("port", port);
+            } else {
+              url.searchParams.delete("port");
+            }
             url.searchParams.set("destination", destination);
             if (password.trim()) {
               url.searchParams.set("password", password);
