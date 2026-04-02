@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SSH Link Generator</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+      :root {
+        --bg: #f4f7f5;
+        --panel: #ffffff;
+        --ink: #14221d;
+        --muted: #5c6b64;
+        --accent: #0c7d59;
+        --accent-2: #0a5f44;
+        --border: #d8e2dc;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 15% 15%, #d8efe4 0, transparent 35%),
+          radial-gradient(circle at 85% 85%, #d6e9ff 0, transparent 38%),
+          var(--bg);
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 920px;
+        margin: 40px auto;
+        padding: 0 16px;
+      }
+
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(20, 34, 29, 0.08);
+        padding: 22px;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: clamp(1.4rem, 1.1rem + 1.2vw, 2rem);
+      }
+
+      .hint {
+        margin: 0 0 20px;
+        color: var(--muted);
+      }
+
+      .grid {
+        display: grid;
+        gap: 12px;
+      }
+
+      label {
+        font-size: 0.95rem;
+        font-weight: 600;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        padding: 11px 12px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        font: inherit;
+        color: var(--ink);
+        background: #fff;
+      }
+
+      textarea {
+        min-height: 120px;
+        resize: vertical;
+      }
+
+      .actions {
+        margin-top: 14px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      button,
+      .open-link {
+        border: 0;
+        border-radius: 10px;
+        padding: 11px 14px;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+        text-decoration: none;
+      }
+
+      button {
+        background: var(--accent);
+        color: #fff;
+      }
+
+      button:hover {
+        background: var(--accent-2);
+      }
+
+      .open-link {
+        background: #10392d;
+        color: #fff;
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .result {
+        margin-top: 16px;
+        border: 1px dashed var(--border);
+        border-radius: 10px;
+        padding: 12px;
+        background: #fafdfb;
+      }
+
+      .result p {
+        margin: 0 0 8px;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .url {
+        word-break: break-all;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+
+      @media (max-width: 640px) {
+        .container {
+          margin: 20px auto;
+        }
+
+        .card {
+          padding: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const { useMemo, useState } = React;
+
+      function App() {
+        const [endpoint, setEndpoint] = useState("https://effective-space-umbrella-x5rgrr7qgj6hpjr-7681.app.github.dev/");
+        const [port, setPort] = useState("10022");
+        const [destination, setDestination] = useState("linuxserver.io@localhost");
+        const [key, setKey] = useState("");
+        const [copied, setCopied] = useState(false);
+
+        const generatedUrl = useMemo(() => {
+          const base = endpoint.trim();
+          if (!base) return "";
+
+          const args = new URLSearchParams();
+          args.append("arg", `port=${port}`);
+          args.append("arg", `destination=${destination}`);
+          args.append("arg", `key=${key}`);
+
+          const separator = base.includes("?") ? "&" : "?";
+          return `${base}${separator}${args.toString()}`;
+        }, [endpoint, port, destination, key]);
+
+        const handleCopy = async () => {
+          if (!generatedUrl) return;
+          try {
+            await navigator.clipboard.writeText(generatedUrl);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 1200);
+          } catch {
+            setCopied(false);
+          }
+        };
+
+        return (
+          <div className="container">
+            <div className="card">
+              <h1>SSH Link Generator</h1>
+              <p className="hint">endpoint / port / destination / key を自由入力して、リンクを生成できます。</p>
+
+              <div className="grid">
+                <label>
+                  Endpoint
+                  <input
+                    type="url"
+                    value={endpoint}
+                    onChange={(e) => setEndpoint(e.target.value)}
+                    placeholder="https://..."
+                  />
+                </label>
+
+                <label>
+                  Port
+                  <input
+                    type="text"
+                    value={port}
+                    onChange={(e) => setPort(e.target.value)}
+                    placeholder="10022"
+                  />
+                </label>
+
+                <label>
+                  Destination
+                  <input
+                    type="text"
+                    value={destination}
+                    onChange={(e) => setDestination(e.target.value)}
+                    placeholder="linuxserver.io@localhost"
+                  />
+                </label>
+
+                <label>
+                  Key
+                  <textarea
+                    value={key}
+                    onChange={(e) => setKey(e.target.value)}
+                    placeholder="秘密鍵の文字列"
+                  />
+                </label>
+              </div>
+
+              <div className="actions">
+                <button type="button" onClick={handleCopy}>
+                  {copied ? "コピー済み" : "URLをコピー"}
+                </button>
+
+                <a
+                  className="open-link"
+                  href={generatedUrl || "#"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => {
+                    if (!generatedUrl) e.preventDefault();
+                  }}
+                >
+                  新しいタブで開く
+                </a>
+              </div>
+
+              <div className="result">
+                <p>生成されたリンク</p>
+                <div className="url">{generatedUrl || "endpointを入力してください"}</div>
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+  </body>
+</html>
