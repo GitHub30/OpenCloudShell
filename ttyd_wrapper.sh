@@ -1,7 +1,7 @@
 if ! command -v ttyd &> /dev/null; then
     echo "ttyd not found, installing..."
     sudo apt update
-    sudo apt install -y ttyd
+    sudo apt install -y ttyd sshpass
 fi
 
 if [ ! -x ssh_wrapper.sh ]; then
