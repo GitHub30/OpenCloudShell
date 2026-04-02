@@ -157,6 +157,7 @@
         const [endpoint, setEndpoint] = useState(location.href + "connect.php");
         const [port, setPort] = useState("10022");
         const [destination, setDestination] = useState("linuxserver.io@localhost");
+        const [password, setPassword] = useState("");
         const [key, setKey] = useState("");
         const [copied, setCopied] = useState(false);
 
@@ -168,12 +169,22 @@
             const url = new URL(base);
             url.searchParams.set("port", port);
             url.searchParams.set("destination", destination);
-            url.searchParams.set("key", key);
+            if (password.trim()) {
+              url.searchParams.set("password", password);
+            } else {
+              url.searchParams.delete("password");
+            }
+
+            if (key.trim()) {
+              url.searchParams.set("key", key);
+            } else {
+              url.searchParams.delete("key");
+            }
             return url.toString();
           } catch {
             return "";
           }
-        }, [endpoint, port, destination, key]);
+        }, [endpoint, port, destination, password, key]);
 
         const handleCopy = async () => {
           if (!generatedUrl) return;
@@ -224,11 +235,21 @@
                 </label>
 
                 <label>
+                  Password
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="接続パスワード（任意）"
+                  />
+                </label>
+
+                <label>
                   Key
                   <textarea
                     value={key}
                     onChange={(e) => setKey(e.target.value)}
-                    placeholder="秘密鍵の文字列"
+                    placeholder="秘密鍵の文字列（任意）"
                   />
                 </label>
               </div>
