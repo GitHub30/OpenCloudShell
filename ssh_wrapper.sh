@@ -3,12 +3,22 @@
 id="$1"
 filename="/tmp/$id.json"
 
-port=$(jq -r .port "$filename")
-destination=$(jq -r .destination "$filename")
+ssh_options=()
 
-TMP_KEY=$(mktemp)
-key=$(jq -r '.key' "$filename")
-echo "$key" > "$TMP_KEY"
-chmod 600 "$TMP_KEY"
+port=$(jq -r .port $filename)
+if [ -n "$port" ]; then
+    ssh_options+=(-p $port)
+fi
 
-exec ssh -o ConnectTimeout=5 -o StrictHostKeyChecking=no -p "$port" -i "$TMP_KEY" "$destination"
+key=$(jq -r .key $filename)
+if [ -n "$key" ]; then
+    TMP_KEY=$(mktemp)
+    echo "$key" > $TMP_KEY
+    chmod 600 "$TMP_KEY"
+    ssh_options+=(-i $TMP_KEY)
+fi
+
+
+destination=$(jq -r .destination $filename)
+
+exec ssh -o ConnectTimeout=5 -o StrictHostKeyChecking=no "${ssh_options[@]}" "$destination"
