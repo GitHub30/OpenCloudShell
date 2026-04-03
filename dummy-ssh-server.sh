@@ -7,5 +7,7 @@ if ! docker ps --format '{{.Ports}}' | grep -q 10022; then
     docker run -d -p 10022:2222 -e PUBLIC_KEY="$(cat dummy.key.pub)" linuxserver/openssh-server
 fi
 
-# ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p 443 -R0:localhost:10022 tcp@a.pinggy.io
-# ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i dummy.key -p 10022 linuxserver.io@localhost
+# ssh -q -o StrictHostKeyChecking=no -i dummy.key -p 10022 linuxserver.io@localhost
+
+# ssh -q -o StrictHostKeyChecking=no -p 443 -R0:localhost:10022 tcp@a.pinggy.io
+# ssh -q -o StrictHostKeyChecking=no -i dummy.key -p 33567 linuxserver.io@ubxxe-23-97-62-139.run.pinggy-free.link

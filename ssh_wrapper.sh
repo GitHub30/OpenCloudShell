@@ -28,4 +28,4 @@ fi
 
 destination=$(jq -r .destination $filename 2> /dev/null)
 
-exec $sshpass_command ssh -o ConnectTimeout=5 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "${ssh_options[@]}" "$destination"
+exec $sshpass_command ssh -q -o ConnectTimeout=5 -o StrictHostKeyChecking=no "${ssh_options[@]}" "$destination"
