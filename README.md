@@ -19,9 +19,8 @@ https://github.com/user-attachments/assets/f079015a-e190-491a-ab89-21778b632cf3
 
 ## Upload / Download file
 
-```bash
 
-```
+![35100587-4edc09d0-fc97-11e7-8e16-bd0f579d35fe](https://github.com/user-attachments/assets/40d6212a-2b0f-434e-95d7-f069ef4073fb)
 
 ## Sixel
 
