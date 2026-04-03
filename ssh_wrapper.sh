@@ -28,4 +28,4 @@ fi
 
 destination=$(jq -r .destination $filename 2> /dev/null)
 
-exec $sshpass_command ssh -o LogLevel=ERROR -o ConnectTimeout=5 -o StrictHostKeyChecking=no "${ssh_options[@]}" "$destination"
+exec $sshpass_command ssh -o LogLevel=ERROR -o ServerAliveInterval=60 -o ConnectTimeout=5 -o StrictHostKeyChecking=no "${ssh_options[@]}" "$destination"
