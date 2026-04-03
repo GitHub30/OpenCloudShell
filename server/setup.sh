@@ -1,4 +1,5 @@
-apt install -y nginx php php-fpm certbot python3-certbot-nginx
+apt update
+apt install -y sshpass nginx php php-fpm certbot python3-certbot-nginx
 
 systemctl stop apache2
 systemctl disable apache2

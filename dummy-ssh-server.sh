@@ -18,3 +18,12 @@ fi
 # ssh -o LogLevel=ERROR -o StrictHostKeyChecking=no -p 10025 linuxserver.io@localhost
 # ssh -o LogLevel=ERROR -o StrictHostKeyChecking=no -p 443 -R0:localhost:10025 tcp@a.pinggy.io
 # ssh -o LogLevel=ERROR -o StrictHostKeyChecking=no -p 33567 linuxserver.io@ubxxe-23-97-62-139.run.pinggy-free.link
+
+# Key with Passphrase
+# ssh-keygen -t ed25519 -f passphrase.key -q -N "passphrase"
+# chmod 600 passphrase.key
+# docker run -d -p 10026:2222 -e SUDO_ACCESS=true -e PUBLIC_KEY="$(cat passphrase.key.pub)" linuxserver/openssh-server
+# ssh -o LogLevel=ERROR -o StrictHostKeyChecking=no -i passphrase.key -p 10026 linuxserver.io@localhost
+# sshpass -P passphrase -p "passphrase" ssh -o LogLevel=ERROR -o StrictHostKeyChecking=no -i passphrase.key -p 10026 linuxserver.io@localhost
+# ssh -o LogLevel=ERROR -o StrictHostKeyChecking=no -p 443 -R0:localhost:10026
+# ssh -o LogLevel=ERROR -o StrictHostKeyChecking=no -i passphrase.key -p 33567 linuxserver.io@ubxxe-23-97-62-139.run.pinggy-free.link
