@@ -5,6 +5,7 @@ fi
 # if not use 10022 port. then docker run
 if ! docker ps --format '{{.Ports}}' | grep -q 10022; then
     docker run -d -p 10022:2222 -e SUDO_ACCESS=true -e PUBLIC_KEY="$(cat dummy.key.pub)" linuxserver/openssh-server
+    # echo "export PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '" >> ~/.profile
 fi
 
 # ssh -o LogLevel=ERROR -o StrictHostKeyChecking=no -i dummy.key -p 10022 linuxserver.io@localhost

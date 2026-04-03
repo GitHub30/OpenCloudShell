@@ -8,4 +8,7 @@ if [ ! -x ssh_wrapper.sh ]; then
     chmod +x ssh_wrapper.sh
 fi
 
-ttyd -W -t enableZmodem=true -t disableReconnect=true -a ./ssh_wrapper.sh
+ttyd -W -t enableZmodem=true -t enableTrzsz=true -t enableSixel=true -t disableReconnect=true -a ./ssh_wrapper.sh
+# nano /etc/default/ttyd
+# systemctl restart ttyd
+# systemctl status ttyd
