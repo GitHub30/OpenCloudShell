@@ -13,7 +13,7 @@ fi
 # ssh -o LogLevel=ERROR -o StrictHostKeyChecking=no -p 443 -R0:localhost:10022 tcp@a.pinggy.io
 # ssh -o LogLevel=ERROR -o StrictHostKeyChecking=no -i dummy.key -p 33567 linuxserver.io@ubxxe-23-97-62-139.run.pinggy-free.link
 
-# docker run -d -p 10025:2222 -e SUDO_ACCESS=true -e PASSWORD_ACCESS=true -e USER_PASSWORD=password linuxserver/openssh-server
+# docker run -d -p 10025:2222 -e SUDO_ACCESS=true -e PASSWORD_ACCESS=true -e USER_PASSWORD=passwd linuxserver/openssh-server
 # ssh -o LogLevel=ERROR -o StrictHostKeyChecking=no -p 10025 linuxserver.io@localhost
 # ssh -o LogLevel=ERROR -o StrictHostKeyChecking=no -p 443 -R0:localhost:10025 tcp@a.pinggy.io
 # ssh -o LogLevel=ERROR -o StrictHostKeyChecking=no -p 33567 linuxserver.io@ubxxe-23-97-62-139.run.pinggy-free.link
