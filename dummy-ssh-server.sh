@@ -4,7 +4,7 @@ if [ ! -f dummy.key ]; then
 fi
 # if not use 10022 port. then docker run
 if ! docker ps --format '{{.Ports}}' | grep -q 10022; then
-    docker run -d -p 10022:2222 -e PUBLIC_KEY="$(cat dummy.key.pub)" linuxserver/openssh-server
+    docker run -d -p 10022:2222 -e SUDO_ACCESS=true -e PUBLIC_KEY="$(cat dummy.key.pub)" linuxserver/openssh-server
 fi
 
 # ssh -o LogLevel=ERROR -o StrictHostKeyChecking=no -i dummy.key -p 10022 linuxserver.io@localhost
