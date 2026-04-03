@@ -20,14 +20,12 @@ fi
 key=$(jq -r '.key // empty' $filename 2> /dev/null)
 if [ -n "$key" ]; then
     TMP_KEY=$(mktemp)
-    echo $TMP_KEY
     echo "$key" > $TMP_KEY
     chmod 600 "$TMP_KEY"
     ssh_options+=(-i $TMP_KEY)
 fi
 
 
-destination=$(jq -r .destination $filename 2> /dev/null)
+destination=$(jq -r '.destination // empty' $filename 2> /dev/null)
 
-echo exec $sshpass_command ssh -o LogLevel=ERROR -o ServerAliveInterval=60 -o ConnectTimeout=5 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "${ssh_options[@]}" "$destination"
 exec $sshpass_command ssh -o LogLevel=ERROR -o ServerAliveInterval=60 -o ConnectTimeout=5 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "${ssh_options[@]}" "$destination"
