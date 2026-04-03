@@ -5,19 +5,19 @@ filename="/tmp/$id.json"
 
 ssh_options=()
 
-port=$(jq -r .port $filename 2> /dev/null)
+port=$(jq -r '.port // empty' $filename 2> /dev/null)
 if [ -n "$port" ]; then
     ssh_options+=(-p $port)
 fi
 
-password=$(jq -r .password $filename 2> /dev/null)
+password=$(jq -r '.password // empty' $filename 2> /dev/null)
 if [ -n "$password" ]; then
     TMP_PASS=$(mktemp)
     echo "$password" > $TMP_PASS
     sshpass_command="sshpass -f $TMP_PASS"
 fi
 
-key=$(jq -r .key $filename 2> /dev/null)
+key=$(jq -r '.key // empty' $filename 2> /dev/null)
 if [ -n "$key" ]; then
     TMP_KEY=$(mktemp)
     echo $TMP_KEY
