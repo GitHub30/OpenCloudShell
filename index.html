@@ -82,6 +82,44 @@
         resize: vertical;
       }
 
+      .key-dropzone {
+        margin-top: 8px;
+        border: 1px dashed var(--border);
+        border-radius: 10px;
+        padding: 10px;
+        background: #fbfefc;
+        transition: border-color 0.15s ease, background-color 0.15s ease;
+      }
+
+      .key-dropzone.dragging {
+        border-color: var(--accent);
+        background: #eefaf5;
+      }
+
+      .key-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .key-select {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: #fff;
+        color: var(--ink);
+        padding: 8px 10px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .key-help {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+
       .actions {
         margin-top: 14px;
         display: flex;
@@ -162,7 +200,7 @@
     <div id="root"></div>
 
     <script type="text/babel">
-      const { useMemo, useState } = React;
+      const { useMemo, useRef, useState } = React;
 
       function App() {
         const [endpoint, setEndpoint] = useState("https://shell.opencloudshell.com/connect.php");
@@ -170,7 +208,21 @@
         const [destination, setDestination] = useState("");
         const [password, setPassword] = useState("");
         const [key, setKey] = useState("");
+        const [keyFileName, setKeyFileName] = useState("");
+        const [draggingKey, setDraggingKey] = useState(false);
         const [copied, setCopied] = useState(false);
+        const keyFileInputRef = useRef(null);
+
+        const applyKeyFile = async (file) => {
+          if (!file) return;
+          try {
+            const text = await file.text();
+            setKey(text);
+            setKeyFileName(file.name);
+          } catch {
+            setKeyFileName("");
+          }
+        };
 
         const generatedUrl = useMemo(() => {
           const base = endpoint.trim();
@@ -265,11 +317,52 @@
 
                 <label>
                   Key
-                  <textarea
-                    value={key}
-                    onChange={(e) => setKey(e.target.value)}
-                    placeholder="Optional private key content"
-                  />
+                  <div
+                    className={"key-dropzone" + (draggingKey ? " dragging" : "")}
+                    onDragOver={(e) => {
+                      e.preventDefault();
+                      setDraggingKey(true);
+                    }}
+                    onDragLeave={() => setDraggingKey(false)}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      setDraggingKey(false);
+                      const file = e.dataTransfer?.files?.[0];
+                      if (file) applyKeyFile(file);
+                    }}
+                  >
+                    <textarea
+                      value={key}
+                      onChange={(e) => setKey(e.target.value)}
+                      placeholder="Optional private key content"
+                    />
+
+                    <div className="key-actions">
+                      <button
+                        type="button"
+                        className="key-select"
+                        onClick={() => keyFileInputRef.current?.click()}
+                      >
+                        Select key file
+                      </button>
+
+                      <input
+                        ref={keyFileInputRef}
+                        type="file"
+                        accept=".key,.pem,.ppk,.txt"
+                        style={{ display: "none" }}
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) applyKeyFile(file);
+                          e.target.value = "";
+                        }}
+                      />
+
+                      <span className="key-help">
+                        {keyFileName ? `Loaded: ${keyFileName}` : "Drag and drop your private key file here or choose a file."}
+                      </span>
+                    </div>
+                  </div>
                 </label>
               </div>
 
