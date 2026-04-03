@@ -2,6 +2,12 @@
 
 DEMO https://opencloudshell.com
 
+# Usage
+
+| Action | Shortcut |
+| --- | --- |
+| Paste | `Ctrl` + `Shift` + `V` |
+
 # Development
 
 ```bash
