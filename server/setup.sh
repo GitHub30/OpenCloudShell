@@ -1,0 +1,9 @@
+apt install -y nginx php php-fpm certbot python3-certbot-nginx
+
+systemctl stop apache2
+systemctl disable apache2
+
+git clone https://github.com/GitHub30/OpenCloudShell
+vi /etc/nginx/sites-available/default
+vi /etc/default/ttyd
+systemctl restart ttyd
