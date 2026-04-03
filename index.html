@@ -306,17 +306,17 @@
                 </label>
 
                 <label>
-                  Password
+                  Password / Passphrase for Private Key
                   <input
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Optional login password"
+                    placeholder="Optional login password or passphrase for private key"
                   />
                 </label>
 
                 <label>
-                  Key
+                  Private Key
                   <div
                     className={"key-dropzone" + (draggingKey ? " dragging" : "")}
                     onDragOver={(e) => {
