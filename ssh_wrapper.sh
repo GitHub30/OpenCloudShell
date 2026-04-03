@@ -13,7 +13,6 @@ fi
 password=$(jq -r .password $filename 2> /dev/null)
 if [ -n "$password" ]; then
     TMP_PASS=$(mktemp)
-    echo $TMP_PASS
     echo "$password" > $TMP_PASS
     sshpass_command="sshpass -f $TMP_PASS"
 fi
@@ -21,6 +20,7 @@ fi
 key=$(jq -r .key $filename 2> /dev/null)
 if [ -n "$key" ]; then
     TMP_KEY=$(mktemp)
+    echo $TMP_KEY
     echo "$key" > $TMP_KEY
     chmod 600 "$TMP_KEY"
     ssh_options+=(-i $TMP_KEY)
