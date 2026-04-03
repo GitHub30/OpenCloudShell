@@ -13,6 +13,7 @@ fi
 password=$(jq -r .password $filename 2> /dev/null)
 if [ -n "$password" ]; then
     TMP_PASS=$(mktemp)
+    echo $TMP_PASS
     echo "$password" > $TMP_PASS
     sshpass_command="sshpass -f $TMP_PASS"
 fi
