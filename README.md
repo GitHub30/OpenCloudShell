@@ -8,6 +8,16 @@ DEMO https://opencloudshell.com
 | --- | --- |
 | Paste | `Ctrl` + `Shift` + `V` |
 
+# Features
+
+## Sixel
+
+```bash
+sudo apk add libsixel-tools
+img2sixel ./snake.png
+```
+
+
 # Development
 
 ```bash
