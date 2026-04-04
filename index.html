@@ -438,7 +438,7 @@
             }
 
             try {
-              const r = await fetch('https://ssh.au.deno.net/?' + new URLSearchParams(config));
+              const r = await fetch('https://ssh.fr.deno.net/?' + new URLSearchParams(config));
               setConnectionStatus(r.ok ? 'ok' : 'error');
             } catch {
               setConnectionStatus('error');
