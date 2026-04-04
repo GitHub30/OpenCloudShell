@@ -260,10 +260,7 @@
         useEffect(() => {
           setConnectionStatus(null);
 
-          const hasDestination = destination.trim() !== '';
-          const hasAuth = password.trim() !== '' || key.trim() !== '';
-
-          if (!hasDestination || !hasAuth) return;
+          if (!destination.trim()) return;
 
           const tid = setTimeout(async () => {
             const dest = destination.trim();

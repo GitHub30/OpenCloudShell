@@ -27,3 +27,10 @@ fi
 # sshpass -P passphrase -p "passphrase" ssh -o LogLevel=ERROR -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i passphrase.key -p 10026 linuxserver.io@localhost
 # ssh -o LogLevel=ERROR -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p 443 -R0:localhost:10026 tcp@a.pinggy.io
 # ssh -o LogLevel=ERROR -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i passphrase.key -p 33567 linuxserver.io@ubxxe-23-97-62-139.run.pinggy-free.link
+
+# No Password and No Key
+# docker build -t my-ssh-server .
+# docker run -d --name test-ssh -p 10027:22 my-ssh-server
+# ssh -o LogLevel=ERROR -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p 10027 root@localhost
+# ssh -o LogLevel=ERROR -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p 443 -R0:localhost:10027 tcp@a.pinggy.io
+# ssh -o LogLevel=ERROR -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -p 33567 root@ubxxe-23-97-62-139.run.pinggy-free.link
