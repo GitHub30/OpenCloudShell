@@ -36,7 +36,7 @@ img2sixel ./snake.png
 - Password Authentication
 - Public Key Authentication
 - Public Key Authentication with Passphrase
-- No Password and No Key (for testing purposes only)
+- No Password and No Private Key Authentication (for testing purposes only)
 
 # Development
 
