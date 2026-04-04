@@ -176,6 +176,29 @@
         flex-wrap: wrap;
       }
 
+      .toolbar {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 10px;
+      }
+
+      .lang-select-wrap {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .lang-select {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: #fff;
+        color: var(--ink);
+        padding: 6px 8px;
+        font: inherit;
+      }
+
       button,
       .open-link {
         border: 0;
@@ -253,8 +276,126 @@
     <script type="text/babel">
       const { useEffect, useMemo, useRef, useState } = React;
 
+      const translations = {
+        en: {
+          languageLabel: "Language",
+          hint: "Generate secure browser SSH launch links for your Open Cloud environment with this WebSSH URL builder.",
+          destinationLabel: "Destination",
+          destinationPlaceholder: "user@localhost",
+          portLabel: "Port",
+          portPlaceholder: "22",
+          passwordLabel: "Password / Passphrase for Private Key",
+          passwordPlaceholder: "Optional login password or passphrase for private key",
+          privateKeyLabel: "Private Key",
+          privateKeyPlaceholder: "Optional private key content",
+          selectKeyFile: "Select key file",
+          keyHelpEmpty: "Drag and drop your private key file here or choose a file.",
+          loadedFile: (name) => `Loaded: ${name}`,
+          copyUrl: "Copy URL",
+          copied: "Copied",
+          openInNewTab: "Open in New Tab",
+          connected: "Connected",
+          generatedLink: "Generated Link",
+          enterDetails: "Enter connection details to generate a link."
+        },
+        ja: {
+          languageLabel: "言語",
+          hint: "Open Cloud 環境向けの安全なブラウザSSH起動リンクを、この WebSSH URL ビルダーで生成できます。",
+          destinationLabel: "接続先",
+          destinationPlaceholder: "user@localhost",
+          portLabel: "ポート",
+          portPlaceholder: "22",
+          passwordLabel: "パスワード / 秘密鍵のパスフレーズ",
+          passwordPlaceholder: "任意: ログイン用パスワードまたは秘密鍵のパスフレーズ",
+          privateKeyLabel: "秘密鍵",
+          privateKeyPlaceholder: "任意の秘密鍵内容",
+          selectKeyFile: "鍵ファイルを選択",
+          keyHelpEmpty: "秘密鍵ファイルをここにドラッグ＆ドロップ、またはファイルを選択してください。",
+          loadedFile: (name) => `読み込み済み: ${name}`,
+          copyUrl: "URLをコピー",
+          copied: "コピー済み",
+          openInNewTab: "新しいタブで開く",
+          connected: "接続確認",
+          generatedLink: "生成リンク",
+          enterDetails: "接続情報を入力するとリンクが生成されます。"
+        },
+        zh: {
+          languageLabel: "语言",
+          hint: "使用此 WebSSH URL 生成器，为你的 Open Cloud 环境创建安全的浏览器 SSH 启动链接。",
+          destinationLabel: "目标地址",
+          destinationPlaceholder: "user@localhost",
+          portLabel: "端口",
+          portPlaceholder: "22",
+          passwordLabel: "密码 / 私钥口令",
+          passwordPlaceholder: "可选：登录密码或私钥口令",
+          privateKeyLabel: "私钥",
+          privateKeyPlaceholder: "可选私钥内容",
+          selectKeyFile: "选择密钥文件",
+          keyHelpEmpty: "将私钥文件拖放到此处，或选择文件。",
+          loadedFile: (name) => `已加载: ${name}`,
+          copyUrl: "复制URL",
+          copied: "已复制",
+          openInNewTab: "在新标签页打开",
+          connected: "已连接",
+          generatedLink: "生成链接",
+          enterDetails: "输入连接信息以生成链接。"
+        },
+        vi: {
+          languageLabel: "Ngon ngu",
+          hint: "Tao lien ket khoi dong SSH tren trinh duyet an toan cho moi truong Open Cloud bang trinh tao URL WebSSH nay.",
+          destinationLabel: "Dich den",
+          destinationPlaceholder: "user@localhost",
+          portLabel: "Cong",
+          portPlaceholder: "22",
+          passwordLabel: "Mat khau / Passphrase cho private key",
+          passwordPlaceholder: "Tuy chon: mat khau dang nhap hoac passphrase cua private key",
+          privateKeyLabel: "Private Key",
+          privateKeyPlaceholder: "Noi dung private key tuy chon",
+          selectKeyFile: "Chon tep key",
+          keyHelpEmpty: "Keo tha tep private key vao day hoac chon tep.",
+          loadedFile: (name) => `Da tai: ${name}`,
+          copyUrl: "Sao chep URL",
+          copied: "Da sao chep",
+          openInNewTab: "Mo tab moi",
+          connected: "Da ket noi",
+          generatedLink: "Lien ket da tao",
+          enterDetails: "Nhap thong tin ket noi de tao lien ket."
+        },
+        ko: {
+          languageLabel: "언어",
+          hint: "이 WebSSH URL 빌더로 Open Cloud 환경용 안전한 브라우저 SSH 실행 링크를 생성하세요.",
+          destinationLabel: "대상",
+          destinationPlaceholder: "user@localhost",
+          portLabel: "포트",
+          portPlaceholder: "22",
+          passwordLabel: "비밀번호 / 개인 키 암호문",
+          passwordPlaceholder: "선택 사항: 로그인 비밀번호 또는 개인 키 암호문",
+          privateKeyLabel: "개인 키",
+          privateKeyPlaceholder: "선택 사항 개인 키 내용",
+          selectKeyFile: "키 파일 선택",
+          keyHelpEmpty: "개인 키 파일을 여기로 드래그 앤 드롭하거나 파일을 선택하세요.",
+          loadedFile: (name) => `불러옴: ${name}`,
+          copyUrl: "URL 복사",
+          copied: "복사됨",
+          openInNewTab: "새 탭에서 열기",
+          connected: "연결됨",
+          generatedLink: "생성된 링크",
+          enterDetails: "연결 정보를 입력하면 링크가 생성됩니다."
+        }
+      };
+
+      function detectInitialLanguage() {
+        const browserLang = (navigator.language || "en").toLowerCase();
+        if (browserLang.startsWith("ja")) return "ja";
+        if (browserLang.startsWith("zh")) return "zh";
+        if (browserLang.startsWith("vi")) return "vi";
+        if (browserLang.startsWith("ko")) return "ko";
+        return "en";
+      }
+
       function App() {
         const endpoint = "https://opencloudshell.com/c.php";
+        const [language, setLanguage] = useState(detectInitialLanguage);
         const [port, setPort] = useState("");
         const [destination, setDestination] = useState("");
         const [password, setPassword] = useState("");
@@ -264,6 +405,11 @@
         const [copied, setCopied] = useState(false);
         const [connectionStatus, setConnectionStatus] = useState(null); // null | 'ok' | 'error'
         const keyFileInputRef = useRef(null);
+        const t = translations[language] || translations.en;
+
+        useEffect(() => {
+          document.documentElement.lang = language;
+        }, [language]);
 
         useEffect(() => {
           setConnectionStatus(null);
@@ -360,42 +506,60 @@
         return (
           <div className="container">
             <div className="card">
+              <div className="toolbar">
+                <label className="lang-select-wrap">
+                  <span>{t.languageLabel}</span>
+                  <select
+                    className="lang-select"
+                    value={language}
+                    onChange={(e) => setLanguage(e.target.value)}
+                    aria-label={t.languageLabel}
+                  >
+                    <option value="en">English</option>
+                    <option value="ja">日本語</option>
+                    <option value="zh">中文</option>
+                    <option value="vi">Tiếng Việt</option>
+                    <option value="ko">한국어</option>
+                  </select>
+                </label>
+              </div>
+
               <h1>OpenCloudShell</h1>
-              <p className="hint">Generate secure browser SSH launch links for your Open Cloud environment with this WebSSH URL builder.</p>
+              <p className="hint">{t.hint}</p>
 
               <div className="grid">
                 <label>
-                  Destination
+                  {t.destinationLabel}
                   <input
                     type="text"
                     value={destination}
                     onChange={(e) => setDestination(e.target.value)}
-                    placeholder="user@localhost"
+                    placeholder={t.destinationPlaceholder}
                   />
                 </label>
 
                 <label>
-                  Port
+                  {t.portLabel}
                   <input
                     type="text"
                     value={port}
                     onChange={(e) => setPort(e.target.value)}
-                    placeholder="22"
+                    placeholder={t.portPlaceholder}
                   />
                 </label>
 
                 <label>
-                  Password / Passphrase for Private Key
+                  {t.passwordLabel}
                   <input
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Optional login password or passphrase for private key"
+                    placeholder={t.passwordPlaceholder}
                   />
                 </label>
 
                 <label>
-                  Private Key
+                  {t.privateKeyLabel}
                   <div
                     className={"key-dropzone" + (draggingKey ? " dragging" : "")}
                     onDragOver={(e) => {
@@ -413,7 +577,7 @@
                     <textarea
                       value={key}
                       onChange={(e) => setKey(e.target.value)}
-                      placeholder="Optional private key content"
+                      placeholder={t.privateKeyPlaceholder}
                     />
 
                     <div className="key-actions">
@@ -422,7 +586,7 @@
                         className="key-select"
                         onClick={() => keyFileInputRef.current?.click()}
                       >
-                        Select key file
+                        {t.selectKeyFile}
                       </button>
 
                       <input
@@ -438,7 +602,7 @@
                       />
 
                       <span className="key-help">
-                        {keyFileName ? `Loaded: ${keyFileName}` : "Drag and drop your private key file here or choose a file."}
+                        {keyFileName ? t.loadedFile(keyFileName) : t.keyHelpEmpty}
                       </span>
                     </div>
                   </div>
@@ -447,7 +611,7 @@
 
               <div className="actions">
                 <button type="button" onClick={handleCopy}>
-                  {copied ? "Copied" : "Copy URL"}
+                  {copied ? t.copied : t.copyUrl}
                 </button>
 
                 <a
@@ -459,17 +623,17 @@
                     if (!generatedUrl) e.preventDefault();
                   }}
                 >
-                  Open in New Tab
+                  {t.openInNewTab}
                 </a>
 
                 {connectionStatus === 'ok' && (
-                  <span style={{ color: 'var(--accent)', fontWeight: 700, display: 'inline-flex', alignItems: 'center' }}>✓ Connected</span>
+                  <span style={{ color: 'var(--accent)', fontWeight: 700, display: 'inline-flex', alignItems: 'center' }}>✓ {t.connected}</span>
                 )}
               </div>
 
               <div className="result">
-                <p>Generated Link</p>
-                <div className="url">{generatedUrl || "Enter connection details to generate a link."}</div>
+                <p>{t.generatedLink}</p>
+                <div className="url">{generatedUrl || t.enterDetails}</div>
               </div>
             </div>
           </div>
