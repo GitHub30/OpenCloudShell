@@ -200,7 +200,7 @@
     <div id="root"></div>
 
     <script type="text/babel">
-      const { useMemo, useRef, useState } = React;
+      const { useEffect, useMemo, useRef, useState } = React;
 
       function App() {
         const [endpoint, setEndpoint] = useState("https://opencloudshell.com/c.php");
@@ -211,7 +211,48 @@
         const [keyFileName, setKeyFileName] = useState("");
         const [draggingKey, setDraggingKey] = useState(false);
         const [copied, setCopied] = useState(false);
+        const [connectionStatus, setConnectionStatus] = useState(null); // null | 'ok' | 'error'
         const keyFileInputRef = useRef(null);
+
+        useEffect(() => {
+          setConnectionStatus(null);
+
+          const hasDestination = destination.trim() !== '';
+          const hasAuth = password.trim() !== '' || key.trim() !== '';
+
+          if (!hasDestination || !hasAuth) return;
+
+          const tid = setTimeout(async () => {
+            const dest = destination.trim();
+            let username = '';
+            let host = dest;
+            if (dest.includes('@')) {
+              const atIdx = dest.lastIndexOf('@');
+              username = dest.slice(0, atIdx);
+              host = dest.slice(atIdx + 1);
+            }
+
+            const config = {};
+            if (host) config.host = host;
+            if (username) config.username = username;
+            if (port.trim()) config.port = port.trim();
+            if (key.trim()) {
+              config.privateKey = key.trim();
+              if (password.trim()) config.passphrase = password.trim();
+            } else if (password.trim()) {
+              config.password = password.trim();
+            }
+
+            try {
+              const r = await fetch('https://ssh.au.deno.net/?' + new URLSearchParams(config));
+              setConnectionStatus(r.ok ? 'ok' : 'error');
+            } catch {
+              setConnectionStatus('error');
+            }
+          }, 800);
+
+          return () => clearTimeout(tid);
+        }, [destination, port, password, key]);
 
         const applyKeyFile = async (file) => {
           if (!file) return;
@@ -382,6 +423,10 @@
                 >
                   Open in New Tab
                 </a>
+
+                {connectionStatus === 'ok' && (
+                  <span style={{ color: 'var(--accent)', fontWeight: 700, display: 'inline-flex', alignItems: 'center' }}>✓ Connected</span>
+                )}
               </div>
 
               <div className="result">
