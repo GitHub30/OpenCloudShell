@@ -31,6 +31,12 @@ img2sixel ./snake.png
 
 <img width="685" height="541" alt="image" src="https://github.com/user-attachments/assets/5ea72f46-9ba6-4db8-9acb-71c1ada52a25" />
 
+## Supported Authentication Methods
+
+- Password Authentication
+- Public Key Authentication
+- Public Key Authentication with Passphrase
+- No Password and No Key (for testing purposes only)
 
 # Development
 
